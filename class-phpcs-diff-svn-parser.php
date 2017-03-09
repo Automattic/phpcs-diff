@@ -9,7 +9,6 @@ class PHPCS_Diff_SVN_parser {
 	// Used to store details about the repo the class was initialized with.
 	public $repo; // Specific repository - eg.: plugin's name.
 	public $repo_url; // SVN repository URL.
-	public $table; // Table used for storing information about revisions.
 
 	function __construct( $repo ) {
 
