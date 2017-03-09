@@ -26,7 +26,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 * : Specify the output format. Allowed values are: table(default) and markdown
 	 *
 	 * [--standard=<standard>]
-	 * : Specify the standard which should be used. Possible values: WordPress, WordPress-VIP (default), WordPress-VIP-minimum
+	 * : Specify the standard which should be used. Possible values: WordPress, WordPress-VIP (default), WordPressVIPminimum
 	 *
 	 * [--nocache]
 	 * : If present the cached value won't be used and the cache won't be updated
