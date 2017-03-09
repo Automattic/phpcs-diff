@@ -2,10 +2,6 @@
 
 class PHPCS_Diff {
 
-	// SVN credentials used for checking out individual revisions.
-	private $svn_username = ''; // @todo: add your SVN username here
-	private $svn_password = ''; // @todo: add your SVN password here
-
 	// PHPCS configuration.
 	private $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
 	private $standards_location = '~/PHP_CodeSniffer/Standards'; // @todo: adjust the path to standards
@@ -15,8 +11,6 @@ class PHPCS_Diff {
 	public $allowed_extensions;
 
 	public $excluded_extensions = array();
-
-	public $repo_url = 'https://plugins.svn.wordpress.org/';
 
 	public $lines_mapping;
 
@@ -162,18 +156,8 @@ class PHPCS_Diff {
 
 		if ( false === $result ) {
 
-			$command_string		= sprintf( 'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s',
-				escapeshellarg( esc_url_raw( $this->repo_url . $filename ) ),
-				escapeshellarg( $this->svn_username ),
-				escapeshellarg( $this->svn_password ),
-				absint( $revision ),
-				escapeshellcmd( $this->phpcs_command ),
-				escapeshellarg( $this->standards_location ),
-				escapeshellarg( $this->phpcs_standard ),
-				escapeshellarg( $filename )
-			);
+			$result = $this->diff_parser->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
 
-			$result = shell_exec( $command_string );
 			if ( true !== $this->nocache ) {
 				wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
 			}

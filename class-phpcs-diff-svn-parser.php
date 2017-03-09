@@ -157,4 +157,19 @@ class PHPCS_Diff_SVN_parser {
 
 	}
 
+	public function run_phpcs_for_file_at_revision( $filename, $revision, $phpcs_command, $standards_location, $phpcs_standard ) {
+		$command_string	= sprintf( 'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s',
+			escapeshellarg( esc_url_raw( $this->repo_url . $filename ) ),
+			escapeshellarg( $this->svn_username ),
+			escapeshellarg( $this->svn_password ),
+			absint( $revision ),
+			escapeshellcmd( $phpcs_command ),
+			escapeshellarg( $standards_location ),
+			escapeshellarg( $phpcs_standard ),
+			escapeshellarg( $filename )
+		);
+
+		return shell_exec( $command_string );
+	}
+
 }
