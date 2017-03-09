@@ -59,7 +59,10 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 			$excluded_exts = array_map( 'sanitize_text_field', explode( ',', $assoc_args['excluded-exts'] ) );
 		}
 
-		$phpcs = new PHPCS_Diff();
+		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
+		require_once( __DIR__ . 'class-phpcs-diff-svn.php' );
+		$phpcs = new PHPCS_Diff( new PHPCS_Diff_SVN( 'hello-dolly' ) );
+
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
 			$phpcs->set_no_diff_too_big( true );
 		}

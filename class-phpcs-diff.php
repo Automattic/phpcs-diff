@@ -6,7 +6,7 @@ class PHPCS_Diff {
 	private $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
 	private $standards_location = '~/PHP_CodeSniffer/Standards'; // @todo: adjust the path to standards
 
-	private $diff_parser;
+	private $version_control;
 
 	public $allowed_extensions;
 
@@ -20,11 +20,9 @@ class PHPCS_Diff {
 
 	private $no_diff_to_big = false;
 
-	public function __construct() {
+	public function __construct( $version_control ) {
 
-		require_once( __DIR__ . 'class-phpcs-diff-svn.php' );
-
-		$this->diff_parser = new PHPCS_Diff_SVN( 'hello-dolly' );
+		$this->version_control = $version_control;
 
 		$this->allowed_extensions = array( 'php', 'js' );
 	}
@@ -66,7 +64,7 @@ class PHPCS_Diff {
 			}
 		}
 
-		$diff  = trim( $this->diff_parser->get_diff( $repo, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
+		$diff  = trim( $this->version_control->get_diff( $repo, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
 
 		$this->stop_the_insanity();
 
@@ -80,7 +78,7 @@ class PHPCS_Diff {
 			return $error;
 		}
 
-		$diff_info	  = $this->diff_parser->parse_diff_for_info( $diff );
+		$diff_info	  = $this->version_control->parse_diff_for_info( $diff );
 		$file_diffs   = $diff_info['file_diffs'];
 
 		$found_issues = array();
@@ -156,7 +154,7 @@ class PHPCS_Diff {
 
 		if ( false === $result ) {
 
-			$result = $this->diff_parser->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
+			$result = $this->version_control->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
 
 			if ( true !== $this->nocache ) {
 				wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
