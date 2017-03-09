@@ -29,7 +29,6 @@ class PHPCS_Diff {
 	public function __construct() {
 
 		require_once( __DIR__ . 'class-phpcs-diff-svn-parser.php' );
-		require_once( __DIR__ . 'class-phpcs-diff-cache.php' );
 
 		$this->diff_parser = new PHPCS_Diff_SVN_parser( 'hello-dolly' );
 
