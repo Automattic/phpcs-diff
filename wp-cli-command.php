@@ -59,7 +59,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 			$excluded_exts = array_map( 'sanitize_text_field', explode( ',', $assoc_args['excluded-exts'] ) );
 		}
 
-		$phpcs = new VIP_Phpcs();
+		$phpcs = new PHPCS_Diff();
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
 			$phpcs->set_no_diff_too_big( true );
 		}
