@@ -22,9 +22,9 @@ class PHPCS_Diff {
 
 	public function __construct() {
 
-		require_once( __DIR__ . 'class-phpcs-diff-svn-parser.php' );
+		require_once( __DIR__ . 'class-phpcs-diff-svn.php' );
 
-		$this->diff_parser = new PHPCS_Diff_SVN_parser( 'hello-dolly' );
+		$this->diff_parser = new PHPCS_Diff_SVN( 'hello-dolly' );
 
 		$this->allowed_extensions = array( 'php', 'js' );
 	}

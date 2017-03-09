@@ -1,6 +1,6 @@
 <?php
 
-class PHPCS_Diff_SVN_parser {
+class PHPCS_Diff_SVN {
 
 	// SVN credentials used for checking out individual revisions.
 	private $svn_username = ''; // @todo: add your SVN username here
