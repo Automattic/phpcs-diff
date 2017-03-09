@@ -48,13 +48,12 @@ class PHPCS_Diff {
 		$this->excluded_extensions = $excluded_exts;
 	}
 
-	public function run( $repo, $oldest_rev, $newest_rev ) {
+	public function run( $oldest_rev, $newest_rev ) {
 
 		$oldest_rev = absint( $oldest_rev );
 		$newest_rev = absint( $newest_rev );
-		$repo	    = sanitize_title( $repo );
 
-		$cache_key	  = md5( 'phpcs_' . $repo . $oldest_rev . $newest_rev );
+		$cache_key	  = md5( 'phpcs_' . $this->version_control->repo . $oldest_rev . $newest_rev );
 		$cache_group  = 'vip-phpcs';
 
 		if ( true !== $this->nocache ) {
@@ -64,7 +63,7 @@ class PHPCS_Diff {
 			}
 		}
 
-		$diff  = trim( $this->version_control->get_diff( $repo, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
+		$diff  = trim( $this->version_control->get_diff( $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
 
 		$this->stop_the_insanity();
 

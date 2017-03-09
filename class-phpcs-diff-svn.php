@@ -9,8 +9,11 @@ class PHPCS_Diff_SVN {
 	// Used to store details about the repo the class was initialized with.
 	public $repo; // Specific repository - eg.: plugin's name.
 	public $repo_url; // SVN repository URL.
+	public $folder = ''; // In case the repository has some other specific folders.
 
-	function __construct( $repo ) {
+	function __construct( $repo, $folder = false ) {
+
+		$repo = sanitize_title( $repo );
 
 		switch ( $repo ) {
 
@@ -22,9 +25,13 @@ class PHPCS_Diff_SVN {
 		}
 
 		$this->repo = $repo;
+
+		if ( false !== $folder && 0 === validate_file( $folder ) ) {
+			$this->folder = $folder;
+		}
 	}
 
-	public function get_diff( $folder, $end_revision, $start_revision = null, $options = array() ) {
+	public function get_diff( $end_revision, $start_revision = null, $options = array() ) {
 		$summarize			 = false;
 		$xml 				 = false;
 		$ignore_space_change = false;
@@ -43,7 +50,6 @@ class PHPCS_Diff_SVN {
 		}
 
 		$end_revision 	= (int) $end_revision;
-		$folder 		= str_replace( '..', '', $folder ); // Prevent moving up a directory
 
 		if ( $start_revision && is_numeric( $start_revision ) ) {
 			$start_revision = (int) $start_revision;
@@ -52,7 +58,7 @@ class PHPCS_Diff_SVN {
 			$start_revision = 1;
 		}
 
-		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) . trailingslashit( $this->repo ) . $folder );
+		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) . trailingslashit( $this->repo ) . $this->folder );
 
 		$diff = shell_exec(
 			sprintf( 'svn diff %s --non-interactive --no-auth-cache --username %s --password %s -r %d:%d %s %s %s',
