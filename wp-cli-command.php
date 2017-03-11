@@ -37,11 +37,14 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 * [--excluded-exts=<excluded-exts>]
 	 * : Ignore specified extensions. Use comma for separating multiple extensions
 	 *
+	 * [--folder=<folder>]
+	 * : Process files in specific folder
+	 *
 	 * ## EXAMPLES
 	 * wp phpcs-diff --repo="hello-dolly" --start_revision=99998 --end_revision=100000
 	 *
 	 * @subcommand phpcs-diff
-	 * @synopsis --repo=<repo> --start_revision=<start-revision> --end_revision=<end-revision> [--standard=<standard>] [--format=<format>] [--nocache] [--ignore-diff-too-big] [--excluded-exts=<excluded-exts>]
+	 * @synopsis --repo=<repo> --start_revision=<start-revision> --end_revision=<end-revision> [--standard=<standard>] [--format=<format>] [--nocache] [--ignore-diff-too-big] [--excluded-exts=<excluded-exts>] [--folder=<folder>]
 	 */
 	public function __invoke( $args, $assoc_args ) {
 
@@ -57,6 +60,11 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		}
 		if ( true === array_key_exists( 'excluded-exts', $assoc_args ) && false === empty( $assoc_args['excluded-exts'] ) ) {
 			$excluded_exts = array_map( 'sanitize_text_field', explode( ',', $assoc_args['excluded-exts'] ) );
+		}
+		if ( true === array_key_exists( 'folder', $assoc_args ) ) {
+			$folder = sanitize_title( $assoc_args['folder'] );
+		} else {
+			$folder = '';
 		}
 
 		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
@@ -77,7 +85,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		if ( true === isset( $excluded_exts ) && false === empty( $excluded_exts ) && true === is_array( $excluded_exts ) ) {
 			$phpcs->set_excluded_extensions( $excluded_exts );
 		}
-		$found_issues = $phpcs->run( $start_revision, $end_revision );
+		$found_issues = $phpcs->run( $start_revision, $end_revision, $folder );
 
 		if ( is_wp_error( $found_issues ) ) {
 			WP_CLI::error( $found_issues->get_error_message(), true );

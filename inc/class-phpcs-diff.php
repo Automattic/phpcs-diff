@@ -61,12 +61,13 @@ class PHPCS_Diff {
 		$this->excluded_extensions = $excluded_exts;
 	}
 
-	public function run( $oldest_rev, $newest_rev ) {
+	public function run( $oldest_rev, $newest_rev, $folder = '' ) {
 
 		$oldest_rev = absint( $oldest_rev );
 		$newest_rev = absint( $newest_rev );
+		$folder		= sanitize_title( $folder );
 
-		$cache_key	  = md5( 'phpcs_' . $this->version_control->repo . $oldest_rev . $newest_rev );
+		$cache_key	  = md5( 'phpcs_' . $this->version_control->repo . $folder . $oldest_rev . $newest_rev );
 		$cache_group  = 'vip-phpcs';
 
 		if ( true !== $this->nocache ) {
@@ -76,7 +77,7 @@ class PHPCS_Diff {
 			}
 		}
 
-		$diff  = trim( $this->version_control->get_diff( $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
+		$diff  = trim( $this->version_control->get_diff( $folder, $newest_rev, $oldest_rev, array( 'ignore-space-change' => true ) ) );
 
 		$this->stop_the_insanity();
 
@@ -109,7 +110,7 @@ class PHPCS_Diff {
 				} else {
 					$is_new_file = false;
 				}
-				$processed_file = $this->process_file( $repo . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file );
+				$processed_file = $this->process_file( $folder . '/' . $filename, $oldest_rev, $newest_rev, $is_new_file );
 				if ( false === $processed_file || true === empty( $processed_file ) ) {
 					continue;
 				}

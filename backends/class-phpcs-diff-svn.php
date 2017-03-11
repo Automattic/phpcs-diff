@@ -36,10 +36,15 @@ class PHPCS_Diff_SVN {
 			# Add new repos here. See details at the top of this file.
 		}
 
+		$repositories = apply_filters( 'phpcs_diff_svn_repositories', array() );
+		if ( true === is_array( $repositories ) && true === array_key_exists( $repo, $repositories ) ) {
+			$this->repo_url = $repositories[$repo];
+		}
+
 		$this->repo = $repo;
 	}
 
-	public function get_diff( $end_revision, $start_revision = null, $options = array() ) {
+	public function get_diff( $folder, $end_revision, $start_revision = null, $options = array() ) {
 		$summarize			 = false;
 		$xml 				 = false;
 		$ignore_space_change = false;
@@ -66,7 +71,7 @@ class PHPCS_Diff_SVN {
 			$start_revision = 1;
 		}
 
-		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) );
+		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) . urlencode( sanitize_title( $folder ) ) );
 
 		$diff = shell_exec(
 			sprintf( 'svn diff %s --non-interactive --no-auth-cache --username %s --password %s -r %d:%d %s %s %s',
