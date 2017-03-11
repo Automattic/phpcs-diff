@@ -72,6 +72,5 @@ For more params of the command, please, see the code directly: https://github.co
 
 # TODO:
 
-- [ ] Create an easy way to register custom repositories
 - [ ] Create Git version control backend
 - [ ] Make the WP CLI command version control backend agnostic
