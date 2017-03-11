@@ -26,7 +26,15 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 # Configuration
 
-This project still requires some manual updates to the code in order to make it working.
+This project requires some manual updates to the code in order to make it working.
+
+## PHPCS
+
+If default values for running PHPCS command does not match your environment (see https://github.com/Automattic/phpcs-diff/blob/master/class-phpcs-diff.php#L5 ), you either need to hardcode them to the `PHPCS_Diff` class, or pass those in the `(array) $options` param to class' constructor from the WP CLI command - https://github.com/Automattic/phpcs-diff/blob/master/wp-cli-command.php#L64
+
+```
+new PHPCS_Diff( new PHPCS_Diff_SVN( $repo ), array( 'phpcs_command' => 'my_phpcs_command', 'standards_location' => 'my/standards/location' ) );
+```
 
 ## SVN
 
@@ -46,15 +54,7 @@ You'll have to either register your repository in the `PHPCS_Diff_SVN`'s constru
 new PHPCS_Diff_SVN( $repo, array( 'repo_url' => 'https://plugins.svn.wordpress.org/hello-dolly' ) );
 ```
 
-## PHPCS
-
-If default values for running PHPCS command does not match your environment (see https://github.com/Automattic/phpcs-diff/blob/master/class-phpcs-diff.php#L5 ), you either need to hardcode them to the `PHPCS_Diff` class, or pass those in the `(array) $options` param to class' constructor from the WP CLI command - https://github.com/Automattic/phpcs-diff/blob/master/wp-cli-command.php#L64
-
-```
-new PHPCS_Diff( new PHPCS_Diff_SVN( $repo ), array( 'phpcs_command' => 'my_phpcs_command', 'standards_location' => 'my/standards/location' ) );
-```
-
-# Running the command
+# Running the WP CLI command
 
 Example command run:
 
