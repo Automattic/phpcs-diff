@@ -10,7 +10,13 @@ class PHPCS_Diff_SVN {
 	public $repo; // repository's slug.
 	public $repo_url; // SVN repository URL.
 
-	function __construct( $repo ) {
+	function __construct( $repo, $options = array() ) {
+
+		if ( true === is_array( $options ) && false === empty( $options ) ) {
+			foreach( $options as $option => $value ) {
+				$this->$option = $value;
+			}
+		}
 
 		$repo = sanitize_title( $repo );
 
@@ -158,8 +164,8 @@ class PHPCS_Diff_SVN {
 	}
 
 	public function run_phpcs_for_file_at_revision( $filename, $revision, $phpcs_command, $standards_location, $phpcs_standard ) {
-		$command_string	= sprintf( 'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s',
-			escapeshellarg( esc_url_raw( trailingslashit( $this->repo_url ) . $filename ) ),
+		$command_string = sprintf( 'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s',
+			escapeshellarg( esc_url_raw( trailingslashit( $this->repo_url ) . ltrim( $filename, '/' ) ) ),
 			escapeshellarg( $this->svn_username ),
 			escapeshellarg( $this->svn_password ),
 			absint( $revision ),
