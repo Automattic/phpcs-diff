@@ -64,7 +64,7 @@ new PHPCS_Diff_SVN( $repo, array( 'repo_url' => 'https://plugins.svn.wordpress.o
 
 Example command run:
 
-```php
+```bash
 wp phpcs-diff --repo="hello-dolly" --start_revision=99998 --end_revision=100000
 ```
 
