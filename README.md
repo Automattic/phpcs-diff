@@ -1,6 +1,6 @@
 # PHPCS Diff
 
-The purpose of this project is to provide a mean of running PHPCS checks on top of file(s) stored in a version control system and reporting issues introduced only in specific revision(s).
+The purpose of this project is to provide a mean of running [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) (aka PHPCS) checks on top of file(s) stored in a version control system and reporting issues introduced only in specific revision(s).
 
 Reporting only new issues for specific revision migth be important in case the PHPCS is being introduced later in the development cycle and there are no resources for cleaning up all existing issues.
 
