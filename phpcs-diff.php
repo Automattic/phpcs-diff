@@ -12,6 +12,10 @@ Text Domain: phpcs_diff
 Domain Path: /languages
 */
 
+if ( false === defined( 'PHPCS_DIFF_PLUGIN_DIR' ) ) {
+	define( 'PHPCS_DIFF_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
 // Load the command only if we're running WordPress via WP CLI.
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once( './wp-cli-command.php' );
