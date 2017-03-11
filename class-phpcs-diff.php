@@ -3,10 +3,10 @@
 class PHPCS_Diff {
 
 	// PHPCS configuration.
-	private $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
-	private $standards_location = '~/PHP_CodeSniffer/Standards'; // @todo: adjust the path to standards
+	public $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
+	public $standards_location = '~/PHP_CodeSniffer/Standards'; // @todo: adjust the path to standards
 
-	private $version_control;
+	public $version_control;
 
 	public $allowed_extensions;
 
@@ -57,7 +57,7 @@ class PHPCS_Diff {
 		$cache_group  = 'vip-phpcs';
 
 		if ( true !== $this->nocache ) {
-			$found_issues = wp_cache_get( $cache_key, $cache_group );
+			$found_issues = false; //wp_cache_get( $cache_key, $cache_group );
 			if ( false !== $found_issues ) {
 				return $found_issues;
 			}
@@ -72,9 +72,12 @@ class PHPCS_Diff {
 		if ( false === $this->no_diff_to_big && strlen( $diff ) > 25000000 ) {
 			$error = new WP_Error( 'diff-too-big', 'The Diff is too big to parse' );
 			if ( true !== $this->nocache ) {
-				wp_cache_set( $cache_key, $error, $cache_group, 3*HOUR_IN_SECONDS );
+				//wp_cache_set( $cache_key, $error, $cache_group, 3*HOUR_IN_SECONDS );
 			}
 			return $error;
+		}
+		if ( true === empty( $diff ) ) {
+			return new WP_Error( 'diff_parsing_error', 'Error parsing diff.' );
 		}
 
 		$diff_info	  = $this->version_control->parse_diff_for_info( $diff );
@@ -103,7 +106,7 @@ class PHPCS_Diff {
 		}
 
 		if ( true !== $this->nocache ) {
-			wp_cache_set( $cache_key, $found_issues, $cache_group, 3*HOUR_IN_SECONDS );
+			//wp_cache_set( $cache_key, $found_issues, $cache_group, 3*HOUR_IN_SECONDS );
 		}
 
 		return $found_issues;
@@ -146,7 +149,7 @@ class PHPCS_Diff {
 		$cache_key	 = 'phpcs_file_rev_' . md5( $filename . $revision . $this->phpcs_standard );
 		$cache_group = 'vip-phpcs';
 		if ( true !== $this->nocache ) {
-			$result	 = wp_cache_get( $cache_key, $cache_group );
+			$result	 = false; //wp_cache_get( $cache_key, $cache_group );
 		} else {
 			$result  = false;
 		}
@@ -156,7 +159,7 @@ class PHPCS_Diff {
 			$result = $this->version_control->run_phpcs_for_file_at_revision( $filename, $revision, $this->phpcs_command, $this->standards_location, $this->phpcs_standard );
 
 			if ( true !== $this->nocache ) {
-				wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
+				//wp_cache_set( $cache_key, $result, $cache_group, 6*HOUR_IN_SECONDS );
 			}
 		}
 		return $result;
