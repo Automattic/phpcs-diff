@@ -18,5 +18,5 @@ if ( false === defined( 'PHPCS_DIFF_PLUGIN_DIR' ) ) {
 
 // Load the command only if we're running WordPress via WP CLI.
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	require_once( './wp-cli-command.php' );
+	require_once( PHPCS_DIFF_PLUGIN_DIR . 'wp-cli-command.php' );
 }
