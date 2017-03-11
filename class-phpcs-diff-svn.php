@@ -3,8 +3,8 @@
 class PHPCS_Diff_SVN {
 
 	// SVN credentials used for checking out individual revisions.
-	private $svn_username = ''; // @todo: add your SVN username here
-	private $svn_password = ''; // @todo: add your SVN password here
+	private $svn_username = '';
+	private $svn_password = '';
 
 	// Used to store details about the repo the class was initialized with.
 	public $repo; // repository's slug.

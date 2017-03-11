@@ -4,7 +4,7 @@ class PHPCS_Diff {
 
 	// PHPCS configuration.
 	public $phpcs_command = 'phpcs'; // You might need to provde a path to phpcs.phar file.
-	public $standards_location = '~/PHP_CodeSniffer/Standards'; // @todo: adjust the path to standards
+	public $standards_location = '~/PHP_CodeSniffer/Standards';
 
 	public $version_control;
 
