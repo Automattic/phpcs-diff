@@ -6,7 +6,13 @@ Reporting only new issues for specific revision migth be important in case the P
 
 # Installation
 
-This project is now totally dependant on a WordPress installation and as it is now, it's meant to be installed as a [WP CLI](wp-cli.org) command.
+## Pre-requisities
+
+This project is dependant on a [WordPress](wordpress.org) installation and is meant to be installed as a [WP CLI](wp-cli.org) command.
+
+You also will need to have the [PHP CodeSniffer installed on your server](https://github.com/squizlabs/PHP_CodeSniffer#installation).
+
+## Installation steps for this project
 
 Checkout this project to your theme or a plugin and include the `wp-cli-command.php` file for introducing a new command to your WP CLI.
 
