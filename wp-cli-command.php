@@ -45,9 +45,9 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 */
 	public function __invoke( $args, $assoc_args ) {
 
-		require_once( __DIR__ . 'class-phpcs-diff.php' );
+		require_once( dirname( __FILE__  ). '/class-phpcs-diff.php' );
 
-		$repo = sanitize_title( $assoc_args['theme'] );
+		$repo = sanitize_title( $assoc_args['repo'] );
 		$start_revision = absint( $assoc_args['start_revision'] );
 		$end_revision = absint( $assoc_args['end_revision'] );
 		if ( true === array_key_exists( 'format', $assoc_args ) && true === in_array( $assoc_args['format'], array( 'table', 'markdown' ), true ) ) {
@@ -60,7 +60,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		}
 
 		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
-		require_once( __DIR__ . 'class-phpcs-diff-svn.php' );
+		require_once( dirname( __FILE__ ) . '/class-phpcs-diff-svn.php' );
 		$phpcs = new PHPCS_Diff( new PHPCS_Diff_SVN( $repo ) );
 
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
