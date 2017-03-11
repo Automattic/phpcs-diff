@@ -41,7 +41,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 	 * wp phpcs-diff --repo="hello-dolly" --start_revision=99998 --end_revision=100000
 	 *
 	 * @subcommand phpcs-diff
-	 * @synopsis --repo=<repo> --start_revision=<start-revision> --end_revision=<end-revision> [--standard=<standard>] [--format=<format>] [--nocache] [--ignore-diff-too-big] [--excluded-exts=<excluded-exts>] [--folder=<folder>]
+	 * @synopsis --repo=<repo> --start_revision=<start-revision> --end_revision=<end-revision> [--standard=<standard>] [--format=<format>] [--nocache] [--ignore-diff-too-big] [--excluded-exts=<excluded-exts>]
 	 */
 	public function __invoke( $args, $assoc_args ) {
 
@@ -58,14 +58,10 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		if ( true === array_key_exists( 'excluded-exts', $assoc_args ) && false === empty( $assoc_args['excluded-exts'] ) ) {
 			$excluded_exts = array_map( 'sanitize_text_field', explode( ',', $assoc_args['excluded-exts'] ) );
 		}
-		$folder = false;
-		if ( true === array_key_exists( 'folder', $assoc_args ) && false === empty( sanitize_text_field( $assoc_args['folder'] ) && 0 === validate_file( sanitize_text_field( $assoc_args['folder'] ) ) ) ) {
-			$folder = sanitize_text_field( $assoc_args['folder'] );
-		}
 
 		// @todo: replace SVN version control backend with any other parser you might want to use - eg.: git
 		require_once( __DIR__ . 'class-phpcs-diff-svn.php' );
-		$phpcs = new PHPCS_Diff( new PHPCS_Diff_SVN( $repo, $folder ) );
+		$phpcs = new PHPCS_Diff( new PHPCS_Diff_SVN( $repo ) );
 
 		if ( true === array_key_exists( 'ignore-diff-too-big', $assoc_args ) ) {
 			$phpcs->set_no_diff_too_big( true );
@@ -81,7 +77,7 @@ class PHPCS_Diff_CLI_Command extends WP_CLI_Command {
 		if ( true === isset( $excluded_exts ) && false === empty( $excluded_exts ) && true === is_array( $excluded_exts ) ) {
 			$phpcs->set_excluded_extensions( $excluded_exts );
 		}
-		$found_issues = $phpcs->run( $repo, $start_revision, $end_revision );
+		$found_issues = $phpcs->run( $start_revision, $end_revision );
 
 		if ( is_wp_error( $found_issues ) ) {
 			WP_CLI::error( $found_issues->get_error_message(), true );

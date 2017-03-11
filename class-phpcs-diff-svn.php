@@ -7,28 +7,23 @@ class PHPCS_Diff_SVN {
 	private $svn_password = ''; // @todo: add your SVN password here
 
 	// Used to store details about the repo the class was initialized with.
-	public $repo; // Specific repository - eg.: plugin's name.
+	public $repo; // repository's slug.
 	public $repo_url; // SVN repository URL.
-	public $folder = ''; // In case the repository has some other specific folders.
 
-	function __construct( $repo, $folder = false ) {
+	function __construct( $repo ) {
 
 		$repo = sanitize_title( $repo );
 
 		switch ( $repo ) {
 
 			case 'hello-dolly':
-				$this->repo_url = 'https://plugins.svn.wordpress.org/';
+				$this->repo_url = 'https://plugins.svn.wordpress.org/hello-dolly';
 				break;
 
 			# Add new repos here. See details at the top of this file.
 		}
 
 		$this->repo = $repo;
-
-		if ( false !== $folder && 0 === validate_file( $folder ) ) {
-			$this->folder = $folder;
-		}
 	}
 
 	public function get_diff( $end_revision, $start_revision = null, $options = array() ) {
@@ -58,7 +53,7 @@ class PHPCS_Diff_SVN {
 			$start_revision = 1;
 		}
 
-		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) . trailingslashit( $this->repo ) . $this->folder );
+		$repo_url = esc_url_raw( trailingslashit( $this->repo_url ) );
 
 		$diff = shell_exec(
 			sprintf( 'svn diff %s --non-interactive --no-auth-cache --username %s --password %s -r %d:%d %s %s %s',
@@ -164,7 +159,7 @@ class PHPCS_Diff_SVN {
 
 	public function run_phpcs_for_file_at_revision( $filename, $revision, $phpcs_command, $standards_location, $phpcs_standard ) {
 		$command_string	= sprintf( 'svn cat %s --non-interactive --no-auth-cache --username %s --password %s -r %d | %s --runtime-set installed_paths %s --standard=%s --stdin-path=%s',
-			escapeshellarg( esc_url_raw( $this->repo_url . $filename ) ),
+			escapeshellarg( esc_url_raw( trailingslashit( $this->repo_url ) . $filename ) ),
 			escapeshellarg( $this->svn_username ),
 			escapeshellarg( $this->svn_password ),
 			absint( $revision ),
