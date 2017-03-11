@@ -30,10 +30,20 @@ This project still requires some manual updates to the code in order to make it 
 
 ## SVN
 
+### Credentials
+
 You either need to hardcode SVN credentials to `PHPCS_Diff_SVN` class ( related code: https://github.com/Automattic/phpcs-diff/blob/master/class-phpcs-diff-svn.php#L5 ) or pass those via the `(array) $options` param to class' constructor from the WP CLI command - https://github.com/Automattic/phpcs-diff/blob/master/wp-cli-command.php#L64
 
 ```
 new PHPCS_Diff_SVN( $repo, array( 'svn_username' => 'my_username', 'svn_password' => 'my_password' ) );
+```
+
+### Repository
+
+You'll have to either register your repository in the `PHPCS_Diff_SVN`'s constructor ( [example](https://github.com/Automattic/phpcs-diff/blob/master/class-phpcs-diff-svn.php#L25,L27) ) or pass your own repository to the constructor via `(array) $options` param from the WP CLI command - https://github.com/Automattic/phpcs-diff/blob/master/wp-cli-command.php#L64
+
+```
+new PHPCS_Diff_SVN( $repo, array( 'repo_url' => 'https://plugins.svn.wordpress.org/hello-dolly' ) );
 ```
 
 ## PHPCS
