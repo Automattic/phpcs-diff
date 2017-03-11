@@ -45,4 +45,4 @@ For more params of the command, please, see the code directly: https://github.co
 - [ ] Make configuration of the environment (phpcs command, standard's location, more repositories registration and svn credentials) easier than manually modificating the code
 - [ ] Create GitHub version control backend
 - [ ] Make the WP CLI command version control backend agnostic
-
+- [ ] Turn this into a proper WordPress plugin for easy installation
