@@ -12,6 +12,13 @@ class PHPCS_Diff_SVN {
 
 	function __construct( $repo, $options = array() ) {
 
+		if ( true === defined( 'PHPCS_DIFF_SVN_USERNAME' ) ) {
+			$this->svn_username = PHPCS_DIFF_SVN_USERNAME;
+		}
+		if ( true === defined( 'PHPCS_DIFF_SVN_PASSWORD' ) ) {
+			$this->svn_password = PHPCS_DIFF_SVN_PASSWORD;
+		}
+
 		if ( true === is_array( $options ) && false === empty( $options ) ) {
 			foreach( $options as $option => $value ) {
 				$this->$option = $value;

@@ -22,6 +22,13 @@ class PHPCS_Diff {
 
 	public function __construct( $version_control, $options = array() ) {
 
+		if ( true === defined( 'PHPCS_DIFF_COMMAND' ) && false === empty( PHPCS_DIFF_COMMAND ) ) {
+			$this->phpcs_command = PHPCS_DIFF_COMMAND;
+		}
+		if ( true === defined( 'PHPCS_DIFF_STANDARDS' ) && false === empty( PHPCS_DIFF_STANDARDS ) ) {
+			$this->standards_location = PHPCS_DIFF_STANDARDS;
+		}
+
 		if ( true === is_array( $options ) && false === empty( $options ) ) {
 			foreach( $options as $option => $value ) {
 				$this->$option = $value;
