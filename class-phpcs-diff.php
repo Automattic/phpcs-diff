@@ -20,7 +20,13 @@ class PHPCS_Diff {
 
 	private $no_diff_to_big = false;
 
-	public function __construct( $version_control ) {
+	public function __construct( $version_control, $options = array() ) {
+
+		if ( true === is_array( $options ) && false === empty( $options ) ) {
+			foreach( $options as $option => $value ) {
+				$this->$option = $value;
+			}
+		}
 
 		$this->version_control = $version_control;
 
